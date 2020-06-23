@@ -256,6 +256,10 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	/**
 	 * Return the EntityResolver to use, building a default resolver
 	 * if none specified.
+	 *
+	 * EntityResolver的作用是项目本身就可以提供一个如何寻找 DTD 声明的方法，即由程序来
+	 * 实现寻找 DTD 声明的过程，比如我们将 DTD 文件放到项目中某处 ，在实现时直接将此文档读
+	 * 取并返回给 SAX 即可 这样就避免了通过网络来找相应的声明
 	 */
 	protected EntityResolver getEntityResolver() {
 		if (this.entityResolver == null) {
@@ -317,7 +321,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 		if (logger.isTraceEnabled()) {
 			logger.trace("Loading XML bean definitions from " + encodedResource);
 		}
-
+		//通过属性记录已经加载的资源
 		Set<EncodedResource> currentResources = this.resourcesCurrentlyBeingLoaded.get();
 		if (currentResources == null) {
 			currentResources = new HashSet<>(4);
@@ -327,12 +331,13 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 			throw new BeanDefinitionStoreException(
 					"Detected cyclic loading of " + encodedResource + " - check your import definitions!");
 		}
-
+		//从 encodedResource中获取已经封装 Resource 对象，并再次从 Resource 中获取其中的 inputStream
 		try (InputStream inputStream = encodedResource.getResource().getInputStream()) {
 			InputSource inputSource = new InputSource(inputStream);
 			if (encodedResource.getEncoding() != null) {
 				inputSource.setEncoding(encodedResource.getEncoding());
 			}
+			// 核心逻辑
 			return doLoadBeanDefinitions(inputSource, encodedResource.getResource());
 		}
 		catch (IOException ex) {
@@ -385,7 +390,9 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 			throws BeanDefinitionStoreException {
 
 		try {
+			//加载 XML 文件，并得到对应的 Document
 			Document doc = doLoadDocument(inputSource, resource);
+			//根据返回的 Document 注册 Bean 信息
 			int count = registerBeanDefinitions(doc, resource);
 			if (logger.isDebugEnabled()) {
 				logger.debug("Loaded " + count + " bean definitions from " + resource);
@@ -438,12 +445,17 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 * <p>Override this method if you would like full control over the validation
 	 * mode, even when something other than {@link #VALIDATION_AUTO} was set.
 	 * @see #detectValidationMode
+	 *
+	 * 验证模式的读取
+	 * Spring 来检测验证模式的办法就是判断是包含 DOCTYPE ，如含就是 DTD ，否则就 XSD
 	 */
 	protected int getValidationModeForResource(Resource resource) {
 		int validationModeToUse = getValidationMode();
+		//如果手动指定了验证模式则使用指定的验证模式
 		if (validationModeToUse != VALIDATION_AUTO) {
 			return validationModeToUse;
 		}
+		//如果未指定则使用自动检测
 		int detectedMode = detectValidationMode(resource);
 		if (detectedMode != VALIDATION_AUTO) {
 			return detectedMode;
@@ -504,7 +516,10 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 * @see BeanDefinitionDocumentReader#registerBeanDefinitions
 	 */
 	public int registerBeanDefinitions(Document doc, Resource resource) throws BeanDefinitionStoreException {
+		//documentReader的实例为：DefaultBeanDefinitionDocumentReader
 		BeanDefinitionDocumentReader documentReader = createBeanDefinitionDocumentReader();
+		//在实例化 BeanDefinitionReader的时候 BeanDefinitionRegistry 传入,默认使用 DefaultListableBeanFactory的子类
+		//记录统计前 BeanDefinition的加载个数
 		int countBefore = getRegistry().getBeanDefinitionCount();
 		documentReader.registerBeanDefinitions(doc, createReaderContext(resource));
 		return getRegistry().getBeanDefinitionCount() - countBefore;

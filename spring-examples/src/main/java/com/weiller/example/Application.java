@@ -11,8 +11,8 @@ public class Application {
 
 	public static void main(String[] args) {
 		System.out.println("启动...");
-		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(Application.class);
-		//ApplicationContext applicationContext = new ClassPathXmlApplicationContext("springbeans.xml");
+		//ApplicationContext applicationContext = new AnnotationConfigApplicationContext(Application.class);
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("springbeans.xml");
 		User user = (User) applicationContext.getBean("user");
 		System.out.println(user);
 		user.setName("zhangsan");
