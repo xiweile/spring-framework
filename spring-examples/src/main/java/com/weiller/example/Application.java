@@ -1,5 +1,6 @@
 package com.weiller.example;
 
+import com.weiller.example.bean.Menu;
 import com.weiller.example.bean.User;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -18,5 +19,9 @@ public class Application {
 		user.setName("zhangsan");
 		user.setAge("20");
 		System.out.println(user);
+
+
+		Menu menu = (Menu) applicationContext.getBean("menu");
+		System.out.println(menu);
 	}
 }

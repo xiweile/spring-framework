@@ -2,6 +2,8 @@ package com.weiller.example.bean;
 
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class User {
 
@@ -10,6 +12,8 @@ public class User {
 	private String age;
 
 	private Integer sex;
+
+	private Role role;
 
 	public String getName() {
 		return name;
@@ -33,6 +37,14 @@ public class User {
 
 	public void setSex(Integer sex) {
 		this.sex = sex;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 	@Override
