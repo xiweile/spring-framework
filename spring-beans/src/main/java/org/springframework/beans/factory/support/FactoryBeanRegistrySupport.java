@@ -43,7 +43,8 @@ import org.springframework.lang.Nullable;
  */
 public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanRegistry {
 
-	/** Cache of singleton objects created by FactoryBeans: FactoryBean name to object. */
+	/** Cache of singleton objects created by FactoryBeans: FactoryBean name to object.
+	 * 缓存由 FactoryBean创建的所有单例对象 */
 	private final Map<String, Object> factoryBeanObjectCache = new ConcurrentHashMap<>(16);
 
 
@@ -112,7 +113,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 								return object;
 							}
 							beforeSingletonCreation(beanName);
-							try {
+							try {// 调用 ObjectFactory 的后置处理器
 								object = postProcessObjectFromFactoryBean(object, beanName);
 							}
 							catch (Throwable ex) {
