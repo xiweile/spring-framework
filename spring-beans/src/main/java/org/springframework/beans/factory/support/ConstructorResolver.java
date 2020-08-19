@@ -193,6 +193,7 @@ class ConstructorResolver {
 			else {
 				ConstructorArgumentValues cargs = mbd.getConstructorArgumentValues();
 				resolvedValues = new ConstructorArgumentValues();
+				// 解析构造参数
 				minNrOfArgs = resolveConstructorArguments(beanName, mbd, bw, cargs, resolvedValues);
 			}
 
@@ -686,7 +687,7 @@ class ConstructorResolver {
 			if (valueHolder.isConverted()) {
 				resolvedValues.addIndexedArgumentValue(index, valueHolder);
 			}
-			else {
+			else {// 构造参数的解析
 				Object resolvedValue =
 						valueResolver.resolveValueIfNecessary("constructor argument", valueHolder.getValue());
 				ConstructorArgumentValues.ValueHolder resolvedValueHolder =
