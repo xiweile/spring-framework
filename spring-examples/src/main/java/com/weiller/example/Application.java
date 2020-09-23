@@ -1,6 +1,5 @@
 package com.weiller.example;
 
-import com.weiller.example.bean.Menu;
 import com.weiller.example.bean.User;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -12,8 +11,12 @@ public class Application {
 
 	public static void main(String[] args) {
 		System.out.println("启动...");
+		testAnnotationStart();	// 测试注解加载
+		//testCircleRefrence();//测试xml配置的循环依赖
+	}
+
+	public static void testAnnotationStart(){
 		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(Application.class);
-		//testCircleRefrence();//测试循环依赖
 	}
 
 	public static void testGetBean(){
@@ -23,17 +26,13 @@ public class Application {
 		user.setName("zhangsan");
 		user.setAge("20");
 		System.out.println(user);
-
-
-		Menu menu = (Menu) applicationContext.getBean("menu");
-		System.out.println(menu);
 	}
 
 	/**
 	 * 测试循环依赖
 	 */
 	public static void testCircleRefrence(){
-		//ApplicationContext applicationContext = new ClassPathXmlApplicationContext("circlebeans.xml");
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("circlebeans.xml");
 
 	}
 

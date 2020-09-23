@@ -13,7 +13,6 @@ public class User {
 
 	private Integer sex;
 
-	private Role role;
 
 	public String getName() {
 		return name;
@@ -37,14 +36,6 @@ public class User {
 
 	public void setSex(Integer sex) {
 		this.sex = sex;
-	}
-
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
 	}
 
 	@Override

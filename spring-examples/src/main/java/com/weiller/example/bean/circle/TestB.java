@@ -1,7 +1,12 @@
 package com.weiller.example.bean.circle;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
 public class TestB {
 
+	@Autowired
 	private  TestC testC;
 
 	public TestB(){}
