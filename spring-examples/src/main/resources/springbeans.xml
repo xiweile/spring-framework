@@ -8,7 +8,5 @@
 		<property name="name" value="张三"/>
 		<property name="age" value="30"/>
 	</bean>
-	<bean id="role" class="com.weiller.example.bean.Role">
-	</bean>
 
 </beans>
